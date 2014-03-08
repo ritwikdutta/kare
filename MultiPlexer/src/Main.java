@@ -1,4 +1,9 @@
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Properties;
 
 /**
  * @author arshsab
@@ -6,8 +11,20 @@ import java.util.Arrays;
  */
 
 public class Main {
-    public static void main(String... args) {
-        String s = "sdfg/sdfg";
-        System.out.println(Arrays.toString(s.split("/")));
+    public static void main(String... args) throws IOException {
+        Properties props = new Properties();
+
+        props.load(new FileInputStream("slaves.properties"));
+
+        ArrayList<String> slaveServers = new ArrayList<String>();
+
+        for (int i = 0; ; i++) {
+            String server = props.getProperty("server." + i);
+
+            if (server != null)
+                slaveServers.add(server);
+        }
+
+
     }
 }

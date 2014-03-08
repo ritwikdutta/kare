@@ -8,7 +8,7 @@ public class API {
 
     }
 
-    public void get(String url) {
+    public void get(String url, Callback callback) {
 
     }
 }
