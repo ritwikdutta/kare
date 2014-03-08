@@ -29,6 +29,8 @@ public class Parser {
             tagList.add(str.replaceAll("[\\W]|_", " "));
         }
 
+
+
         readme = readme.replaceAll("[\\W]|_", " ");
         String[] words = readme.split(" ");
         ArrayList<String> wordList= new ArrayList<String>();
