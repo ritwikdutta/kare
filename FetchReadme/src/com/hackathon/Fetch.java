@@ -3,11 +3,13 @@ package com.hackathon;
 import com.mongodb.*;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -22,43 +24,52 @@ public class Fetch {
     //twbs/bootstrap/master/README.md
     public static void main(String[] args) throws UnknownHostException {
 
+
+        ExecutorService exec = Executors.newFixedThreadPool(150);
         MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
         DB db = mongoClient.getDB( "kare" );
-        DBCollection coll = db.getCollection("repos");
-        DBCursor cursor = coll.find();
+        final DBCollection coll = db.getCollection("repos");
+        final DBCursor cursor = coll.find();
         try {
             while (cursor.hasNext()) {
-                BasicDBObject obj = (BasicDBObject) cursor.next();
-                String name = (String) obj.get("name");
-                String repo = (String) obj.get("repo");
-                String masterBranch = (String) obj.get("master_branch");
-                String url = base + name + "/" + repo + "/" + masterBranch;
-                String readme = Http.get(url + "/README.md");
-                if (readme == null) {
-                    readme = Http.get(url + "/README.txt");
-                }
-                if (readme == null) {
-                    readme = Http.get(url + "/README");
-                }
-                if (readme == null) {
-                    readme = Http.get(url + "/README.rst");
-                }
+                exec.submit(new Runnable() {
+                    @Override
+                    public void run() {
+                        BasicDBObject obj = (BasicDBObject) cursor.next();
+                        String name = (String) obj.get("name");
+                        String repo = (String) obj.get("repo");
+                        String masterBranch = (String) obj.get("master_branch");
+                        String url = base + name + "/" + repo + "/" + masterBranch;
+                        String readme = Http.get(url + "/README.md");
+                        if (readme == null) {
+                            readme = Http.get(url + "/README.txt");
+                        }
+                        if (readme == null) {
+                            readme = Http.get(url + "/README");
+                        }
+                        if (readme == null) {
+                            readme = Http.get(url + "/README.rst");
+                        }
 
-                if (readme == null) {
-                    readme = Http.get(url + "/README.txt");
-                }
-                
+                        if (readme == null) {
+                            readme = Http.get(url + "/README.txt");
+                        }
+                        if (readme != null) {
+                            try {
+                                obj.append("tags", Parser.getKeywords(readme));
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        coll.save(obj);
+                    }
+                });
+
             }
         } finally {
             cursor.close();
         }
-        ExecutorService exec = Executors.newFixedThreadPool(150);
-        exec.submit(new Runnable() {
-            @Override
-            public void run() {
-                String s = Http.get("https://raw.github.com/twbs/bootstrap/master/README.md");
-            }
-        });
+        exec.shutdown();
     }
 
 
