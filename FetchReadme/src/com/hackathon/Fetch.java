@@ -3,13 +3,11 @@ package com.hackathon;
 import com.mongodb.*;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * @author Adrian Chmielewski-Anders
@@ -47,18 +45,16 @@ public class Fetch {
                 if (readme == null) {
                     readme = Http.get(url + "/README.txt");
                 }
-                
+                if (readme != null) {
+                    obj.append("tags", Parser.getKeywords(readme));
+                }
+                coll.save(obj);
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         } finally {
             cursor.close();
         }
-        ExecutorService exec = Executors.newFixedThreadPool(150);
-        exec.submit(new Runnable() {
-            @Override
-            public void run() {
-                String s = Http.get("https://raw.github.com/twbs/bootstrap/master/README.md");
-            }
-        });
     }
 
 
