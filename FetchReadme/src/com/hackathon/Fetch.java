@@ -36,7 +36,7 @@ public class Fetch {
                     @Override
                     public void run() {
                         BasicDBObject obj = (BasicDBObject) cursor.next();
-                        String name = (String) obj.get("name");
+                        String name = (String) obj.get("owner");
                         String repo = (String) obj.get("repo");
                         String masterBranch = (String) obj.get("master_branch");
                         String url = base + name + "/" + repo + "/" + masterBranch;
@@ -56,7 +56,7 @@ public class Fetch {
                         }
                         if (readme != null) {
                             try {
-                                obj.append("tags", Parser.getKeywords(readme));
+                                obj.append("tags", Parser.getKeywords(readme + (String)obj.get("desc")));
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
