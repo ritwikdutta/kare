@@ -14,7 +14,7 @@ public class Main {
 
     }
 
-    public static ArrayList<String> getKeywords(String readme) throws FileNotFoundException {
+    public static ArrayList<String> getKeywords(String readme) throws IOException {
 
         System.out.println(new File("MultiPlexer/Data/tags.csv").getAbsolutePath());
 
@@ -27,7 +27,7 @@ public class Main {
             if (str == null) { break; }
             tagList.add(str.replaceAll("[\\W]|_", " "));
         }
-        s
+
         readme = readme.replaceAll("[\\W]|_", " ");
         String[] words = readme.split(" ");
         ArrayList<String> wordList= new ArrayList<String>();
