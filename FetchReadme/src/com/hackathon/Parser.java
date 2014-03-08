@@ -1,3 +1,5 @@
+package com.hackathon;
+
 import java.io.*;
 import java.util.ArrayList;
 
@@ -29,7 +31,7 @@ public class Parser {
             tagList.add(str.replaceAll("[\\W]|_", " "));
         }
 
-
+        System.out.println(readme);
 
         readme = readme.replaceAll("[\\W]|_", " ");
         String[] words = readme.split(" ");
