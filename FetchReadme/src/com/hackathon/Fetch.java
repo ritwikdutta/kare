@@ -1,9 +1,6 @@
 package com.hackathon;
 
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.MongoClient;
+import com.mongodb.*;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -20,6 +17,9 @@ import java.util.concurrent.Executors;
  */
 
 public class Fetch {
+
+    private static final String base = "https://raw.github.com/";
+    //twbs/bootstrap/master/README.md
     public static void main(String[] args) throws UnknownHostException {
 
         MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
@@ -28,7 +28,26 @@ public class Fetch {
         DBCursor cursor = coll.find();
         try {
             while (cursor.hasNext()) {
+                BasicDBObject obj = (BasicDBObject) cursor.next();
+                String name = (String) obj.get("name");
+                String repo = (String) obj.get("repo");
+                String masterBranch = (String) obj.get("master_branch");
+                String url = base + name + "/" + repo + "/" + masterBranch;
+                String readme = Http.get(url + "/README.md");
+                if (readme == null) {
+                    readme = Http.get(url + "/README.txt");
+                }
+                if (readme == null) {
+                    readme = Http.get(url + "/README");
+                }
+                if (readme == null) {
+                    readme = Http.get(url + "/README.rst");
+                }
 
+                if (readme == null) {
+                    readme = Http.get(url + "/README.txt");
+                }
+                
             }
         } finally {
             cursor.close();
@@ -63,7 +82,7 @@ public class Fetch {
                 in.close();
                 return sb.toString();
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                return null;
             }
         }
     }
