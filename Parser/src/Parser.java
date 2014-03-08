@@ -4,10 +4,10 @@ import java.util.ArrayList;
 /**
  * Created by ritwik on 3/8/14.
  */
-public class Main {
+public class Parser {
 
     public static void main(String... args) throws IOException {
-        ArrayList<String> keys = getKeywords("");
+        ArrayList<String> keys = getKeywords("JavaScript jQuery BootStrap CDNto");
         for (int i = 0; i < keys.size(); i++) {
             System.out.println(keys.get(i));
         }
@@ -21,6 +21,7 @@ public class Main {
         BufferedReader fileReader = new BufferedReader(new FileReader("MultiPlexer/Data/tags.csv"));
 
         ArrayList<String> tagList = new ArrayList<String>();
+
 
         while (true) {
             String str = fileReader.readLine();
