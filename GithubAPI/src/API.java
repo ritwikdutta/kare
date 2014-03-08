@@ -4,10 +4,8 @@
  */
 
 public class API {
-    private final String me;
+    public API() {
 
-    public API(String me) {
-        this.me = me;
     }
 
     public void get(String url) {

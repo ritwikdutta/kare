@@ -4,10 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -66,7 +63,7 @@ public class SlaveServlet extends HttpServlet {
                 }
 
                 if (result == null) {
-
+//                    post(id, );
                 }
 
 
@@ -74,27 +71,16 @@ public class SlaveServlet extends HttpServlet {
             }
 
             private void post(String id, String what, String server) throws IOException {
-                URL url = new URL(server);
+                URL url = new URL(server + (server.endsWith("/") ? "" : "/") + "process?id=" + id);
 
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
                 conn.setRequestMethod("POST");
-
-
-//                String type = "application/x-www-form-urlencoded";
-//                String encodedData = URLEncoder.encode( rawData, "UTF-8" );
-//                URL u = new URL("http://www.example.com/page.php");
-//                HttpURLConnection conn = (HttpURLConnection) u.openConnection();
-//                conn.setDoOutput(true);
-//                conn.setRequestMethod("POST");
-//                conn.setRequestProperty( "Content-Type", type );
-//                conn.setRequestProperty( "Content-Length", String.valueOf(encodedData.length()));
-//                OutputStream os = conn.getOutputStream();
-//                os.write(encodedData.getBytes());
+                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+                wr.write(what);
+                wr.flush();
+                wr.close();
             }
-
-
-
         });
 
 
