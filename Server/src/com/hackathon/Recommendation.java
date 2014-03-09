@@ -34,7 +34,7 @@ public class Recommendation extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<String> recs = null;
         try {
-            Recommender.getRecommendations(req.getParameter("repo"), "access_token=71ad4d33a5df2eee6f81caa088eeeb047c7785aa");
+            recs = Recommender.getRecommendations(req.getParameter("repo"), "access_token=71ad4d33a5df2eee6f81caa088eeeb047c7785aa");
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
