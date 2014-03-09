@@ -45,7 +45,6 @@ public class SimpleRequestCallback implements Callback {
                 return;
             }
 
-            // todo : change get to path
 
             BasicDBObject doc = new BasicDBObject("name", repo.path("name").textValue())
                                     .append("owner", repo.get("owner").path("login").textValue())

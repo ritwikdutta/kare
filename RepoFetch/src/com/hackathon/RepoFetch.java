@@ -24,7 +24,8 @@ public class RepoFetch {
         } else {
             host = "localhost";
         }
-        api = new API(args[1]);
+        //"3cf24df59e2e96f60a649099cc2997a6745243a4"
+        api = new API();
 
         try {
             mongoClient = new MongoClient(host, 27017);
@@ -43,11 +44,11 @@ public class RepoFetch {
         //manual ranges for the first ones
 
 
-        fetchAllPages("search/repositories?q=stars:" + ">60000");//1700
+        fetchAllPages("search/repositories?q=stars:" + ">1700");//1700
 
         fetchAllPages("search/repositories?q=stars:" + "1000..1699");
         fetchAllPages("search/repositories?q=stars:" + "710..999");
-        fetchAllPages("search/repositories?q=stars:" + "550..509");
+        fetchAllPages("search/repositories?q=stars:" + "550..709");
         fetchAllPages("search/repositories?q=stars:" + "450..549");
         fetchAllPages("search/repositories?q=stars:" + "380..449");
         fetchAllPages("search/repositories?q=stars:" + "330..379");
@@ -83,11 +84,6 @@ public class RepoFetch {
         for (int i = 56; i<40; i--) {
             fetchAllPages("search/repositories?q=stars:" + i);
         }
-
-
-
-        //the above method doesn't work anymore, so lets try a more complex one
-
 
 
 
