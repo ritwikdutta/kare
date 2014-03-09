@@ -1,3 +1,5 @@
+package com.hackathon;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.servlet.http.HttpServlet;
