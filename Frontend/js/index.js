@@ -1,6 +1,7 @@
 $(document).ready(function() {
-function search() {
-    $.get("/recs", function(data) {
+function search(repo) {
+    $.get("/recs?repo=" + repo , function(data) {
+        console.log(repo);
         $("#append").append(data);
     });
 }
@@ -106,7 +107,6 @@ $('.textbox').typeahead(null, {
 
 $(".textbox").keypress(function (e) {
     if (e.which == 13) {
-        search();
         console.log('swag');
         $(this).change();
     }
