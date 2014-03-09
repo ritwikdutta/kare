@@ -108,7 +108,9 @@ $('.textbox').typeahead(null, {
 $(".textbox").keypress(function (e) {
     if (e.which == 13) {
         console.log('swag');
+        NProgress.start();
         $(this).change();
+        NProgress.done();
     }
     
    
