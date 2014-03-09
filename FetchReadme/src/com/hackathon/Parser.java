@@ -1,7 +1,5 @@
 package com.hackathon;
 
-import com.sun.org.apache.regexp.internal.recompile;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,6 +7,7 @@ import java.util.Arrays;
 /**
  * Created by ritwik on 3/8/14.
  */
+
 public class Parser {
 
     private static ArrayList<String> tags = null;
