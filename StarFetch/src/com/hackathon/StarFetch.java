@@ -43,8 +43,8 @@ public class StarFetch {
                 DBObject repo = cursor.next();
                 String url = "repos/" + repo.get("owner") + "/" + repo.get("name") + "/stargazers?per_page=100";
                 int starcount =  ((Integer) repo.get("star_count")).intValue();
-                System.out.print(repo.get("name")+":");
-                System.out.println(starcount);
+                //System.out.print(repo.get("name")+":");
+                //System.out.println(starcount);
                 int pages = starcount / 100;
                 for (int i = 1; i<=pages; i++ ) {
                     api.get(url + "&page=" + i, cb, repo.get("owner") + "/" + repo.get("name"));

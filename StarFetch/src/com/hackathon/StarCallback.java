@@ -48,6 +48,7 @@ public class StarCallback implements Callback {
             BasicDBObject doc = new BasicDBObject("stargazer", star.path("login").textValue())
                                     .append("name", repo);
             stars.insert(doc);
+            i++;
         }
     }
 }

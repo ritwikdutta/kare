@@ -30,7 +30,7 @@ $(".textbox").on("input", function (e) {
 });
 */
 
-var suggestions = new Bloodhound({
+var users = new Bloodhound({
     datumTokenizer: function (d) {return Bloodhound.tokenizers.whitespace(d.value)},
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     limit: 5,
@@ -39,7 +39,7 @@ var suggestions = new Bloodhound({
         filter: function(data) {
             return $.map(data.results, function(unit) {
                 return {
-                    value: unit.url.substring(1)
+                    value: unit.url.substring(1) + '/'
                 }
             });
         }
@@ -47,10 +47,13 @@ var suggestions = new Bloodhound({
     
 });
 
-suggestions.initialize().done(function(){
+users.initialize().done(function(){
     console.log('ok');
 });
 
+var suggestions = new Bloodhound({
+    
+})
 
 $('.textbox').typeahead(null, {
     displayKey: 'value',
