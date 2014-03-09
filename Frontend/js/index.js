@@ -1,3 +1,4 @@
+$(document).ready(function() {
 function search() {
 
 
@@ -11,6 +12,7 @@ $(".textbox").keypress(function (e) {
     if (e.which == 13) {
         search();
     }
+    
 });
 /*
 $(".textbox").on("input", function (e) {
@@ -48,15 +50,75 @@ var users = new Bloodhound({
 });
 
 users.initialize().done(function(){
-    console.log('ok');
+    console.log('users ok');
 });
 
-var suggestions = new Bloodhound({
+var repos = new Bloodhound({
+    datumTokenizer: function(d) {return Bloodhound.tokenizers.whitespace(d.value)},
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    limit: 15,
+    remote: {
+        url:'repos?q=%QUERY',
+        filter: function(data) {
+            return $.map(data.results, function(unit) {
+               return {
+                   value: unit.command
+               } 
+            });
+        }
+    }
     
 })
+repos.initialize().done(function(){
+    console.log("repo ok");
+});
+var suggestions = function (query, cb) {
+    var ret;
+    //if query contains / it is a repo search
+    
+    if (query.indexOf('/') > -1 ) {
+        console.log(query.substring(query.indexOf('/')+1));
+        repos.get(query.substring(0,query.indexOf('/')+1), function(data) {
+            
+            if (data.length > 0){
+                console.log('sw');
+                ret = data;  
+                cb(data);
+            }
+            
+        });
+        
+        
+    } else {
+        users.get(query, function(data){
+            if (data.length > 0) {
+                cb(data);
+            }
+        })
+    }
+}
 
 $('.textbox').typeahead(null, {
     displayKey: 'value',
-    source: suggestions.ttAdapter()
-})
+    source: suggestions
+});
+
+$(".textbox").keypress(function (e) {
+    if (e.which == 13) {
+        search();
+        console.log('swag');
+        $(this).change();
+    }
+    
+   
+    
+});
+
+/*
+$('.textbox').typeahead(null, {
+    displayKey: 'value',
+    source: repos.ttAdapter()
+});
+*/
+});
 

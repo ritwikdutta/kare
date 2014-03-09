@@ -16,6 +16,7 @@ public class Repos extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String q = req.getParameter("q").replace(" ", "+");
+        System.out.println(q);
         //https://github.com/command_bar/users?q=ar
         resp.setContentType("application/json");
         resp.getWriter().write(Http.read("https://github.com/command_bar/repos_for/" + q));
