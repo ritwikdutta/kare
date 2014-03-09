@@ -59,9 +59,8 @@ public class Recommendation extends HttpServlet {
         }
         PrintWriter pw = resp.getWriter();
 
-        pw.write(header + html(
-                head(script(), link()),
-                body(sb.toString())
-        ));
+        pw.write(div(sb.toString()));
+        pw.flush();
+        pw.close();
     }
 }

@@ -1,16 +1,17 @@
 $(document).ready(function() {
 function search() {
-
-
+    $.get("/recs", function(data) {
+        $("#append").append(data);
+    });
 }
 
 $("#searchbtn").click(function () {
-    search();
+    search($(this).val());
 });
 
 $(".textbox").keypress(function (e) {
     if (e.which == 13) {
-        search();
+        search($(this).val());
     }
     
 });
@@ -68,7 +69,7 @@ var repos = new Bloodhound({
         }
     }
     
-})
+});
 repos.initialize().done(function(){
     console.log("repo ok");
 });
