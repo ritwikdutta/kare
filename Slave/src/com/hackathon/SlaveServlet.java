@@ -1,6 +1,5 @@
 package com.hackathon;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +15,6 @@ import java.util.concurrent.Executors;
  */
 
 public class SlaveServlet extends HttpServlet {
-    private static final ObjectMapper mapper = new ObjectMapper();
     private final ExecutorService exec = Executors.newFixedThreadPool(150);
     private String accessToken;
 
