@@ -89,7 +89,7 @@ public class Recommender {
         });
 
         for (final Map.Entry<Integer, String> entry : sorted.entrySet()) {
-            corrected.put(entry.getKey() / Math.pow(starCounts.get(entry.getValue()), 1.0 / 3.0), entry.getValue());
+            corrected.put(entry.getKey() / Math.pow(starCounts.get(entry.getValue()), 5.0 / 12.0), entry.getValue());
 
             if (i++ > 100) {
                 break;

@@ -3,6 +3,7 @@ function search(repo) {
     $.get("/recs?repo=" + repo , function(data) {
         console.log(repo);
         $("#append").append(data);
+        NProgress.done();
     });
 }
 
@@ -13,26 +14,27 @@ $("#searchbtn").click(function () {
 $(".textbox").keypress(function (e) {
     if (e.which == 13) {
         search($(this).val());
+
     }
-    
+
 });
 /*
-$(".textbox").on("input", function (e) {
-    var value = $(this).val();
-   $.getJSON("/users?q=" + value, function (data) {
-        var results = data.results;
-        console.log(results);
-        
-        suggestions.initialize();
-        $(".typeahead").typeahead(null, {
-            
-            source: suggestions.ttAdapter()
+ $(".textbox").on("input", function (e) {
+ var value = $(this).val();
+ $.getJSON("/users?q=" + value, function (data) {
+ var results = data.results;
+ console.log(results);
 
-        });
-    })
+ suggestions.initialize();
+ $(".typeahead").typeahead(null, {
 
-});
-*/
+ source: suggestions.ttAdapter()
+
+ });
+ })
+
+ });
+ */
 
 var users = new Bloodhound({
     datumTokenizer: function (d) {return Bloodhound.tokenizers.whitespace(d.value)},
@@ -48,7 +50,7 @@ var users = new Bloodhound({
             });
         }
     }
-    
+
 });
 
 users.initialize().done(function(){
@@ -63,13 +65,13 @@ var repos = new Bloodhound({
         url:'repos?q=%QUERY',
         filter: function(data) {
             return $.map(data.results, function(unit) {
-               return {
-                   value: unit.command
-               } 
+                return {
+                    value: unit.command
+                }
             });
         }
     }
-    
+
 });
 repos.initialize().done(function(){
     console.log("repo ok");
@@ -77,20 +79,20 @@ repos.initialize().done(function(){
 var suggestions = function (query, cb) {
     var ret;
     //if query contains / it is a repo search
-    
+
     if (query.indexOf('/') > -1 ) {
         console.log(query.substring(query.indexOf('/')+1));
         repos.get(query.substring(0,query.indexOf('/')+1), function(data) {
-            
+
             if (data.length > 0){
                 console.log('sw');
-                ret = data;  
+                ret = data;
                 cb(data);
             }
-            
+
         });
-        
-        
+
+
     } else {
         users.get(query, function(data){
             if (data.length > 0) {
@@ -110,17 +112,16 @@ $(".textbox").keypress(function (e) {
         console.log('swag');
         NProgress.start();
         $(this).change();
-        NProgress.done();
+
     }
-    
-   
-    
+
+
+
 });
 
 /*
-$('.textbox').typeahead(null, {
-    displayKey: 'value',
-    source: repos.ttAdapter()
-});
-*/
-
+ $('.textbox').typeahead(null, {
+ displayKey: 'value',
+ source: repos.ttAdapter()
+ });
+ */
