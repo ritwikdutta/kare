@@ -5,10 +5,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * @author arshsab
@@ -16,17 +13,21 @@ import java.util.concurrent.TimeUnit;
  */
 
 public class API {
-    private final String multiplexerUrl = "http://ec2-54-186-6-142.us-west-2.compute.amazonaws.com:8081";
-    private final ScheduledExecutorService exec = Executors.newScheduledThreadPool(100);
+    private final ExecutorService exec = Executors.newScheduledThreadPool(100);
+    private final String key;
 
-    private final ConcurrentHashMap<Long, Callback> callbacks = new ConcurrentHashMap<>();
+    public API(String key) {
+        this.key = key;
+    }
 
     public void get(final String url, final Callback callback) {
             exec.submit(new Runnable() {
                 @Override
                 public void run() {
                     try {
-                        HttpURLConnection conn = (HttpURLConnection) new URL(multiplexerUrl + "/incoming?what=" + URLEncoder.encode(url, "UTF-8")).openConnection();
+                        String before = url.contains("?") ? "&" : "?";
+
+                        HttpURLConnection conn = (HttpURLConnection) new URL("https://api.github.com" + url + before + key).openConnection();
 
                         BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
@@ -38,45 +39,18 @@ public class API {
                             sb.append(line);
                         in.close();
 
-                        final long id = Long.parseLong(sb.toString());
-
-                        callbacks.put(id, callback);
-
-                        exec.schedule(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    HttpURLConnection conn = (HttpURLConnection) new URL(multiplexerUrl + "/retrieve" + "?id=" + URLEncoder.encode(id + "", "UTF-8")).openConnection();
-
-                                    BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
-                                    String line;
-
-                                    StringBuilder sb = new StringBuilder();
-
-                                    while ((line = in.readLine()) != null)
-                                        sb.append(line);
-                                    in.close();
-
-                                    if (sb.toString().equals("error")) {
-                                        exec.schedule(this, 1, TimeUnit.SECONDS);
-                                    } else {
-                                        callbacks.get(id).onComplete(sb.toString());
-                                    }
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }, 1, TimeUnit.SECONDS);
+                        callback.onComplete(sb.toString());
 
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e1) {
+                            e1.printStackTrace();
+                        }
+
+                        exec.submit(this);
                     }
                 }
             });
-
-
-
-
     }
 }
