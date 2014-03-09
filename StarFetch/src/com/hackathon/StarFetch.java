@@ -20,7 +20,7 @@ public class StarFetch {
 
     public static void main(String[] args) throws Exception {
         try {
-            mongoClient = new MongoClient("localhost", 27017);
+            mongoClient = new MongoClient("54.186.89.119", 27017);
         } catch (Exception e) {
             e.printStackTrace();
             return;

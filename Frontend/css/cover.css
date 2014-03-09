@@ -162,3 +162,7 @@ body {
   }
 }
 
+input[type="text"] {
+    width: 740px;
+    height: 60px;
+}
