@@ -53,6 +53,11 @@ public class Tags {
         return div + build(args) + close(div);
     }
 
+    public static String divStyle(String style, String... args) {
+        return div.substring(0, 4) + " " + style + " >" +  build(args) + close(div);
+    }
+
+
     public static String h1(String... args) {
         return h1 + build(args) + close(h1);
     }

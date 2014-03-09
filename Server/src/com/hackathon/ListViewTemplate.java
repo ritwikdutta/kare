@@ -1,7 +1,8 @@
 package com.hackathon;
 
 import static com.hackathon.Tags.a;
-import static com.hackathon.Tags.div;
+import static com.hackathon.Tags.divStyle;
+import static com.hackathon.Tags.h2;
 
 /**
  * @author Adrian Chmielewski-Anders
@@ -12,7 +13,9 @@ public class ListViewTemplate extends Template {
 
     @Override
     public String define() {
-        return div(
+        return divStyle("class=\"item\"",
+                h2("$text"),
+                
                 a("$href", "$text")
         );
     }
