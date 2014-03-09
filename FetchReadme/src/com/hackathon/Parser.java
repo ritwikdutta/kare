@@ -14,7 +14,7 @@ public class Parser {
     private static ArrayList<String> tags = null;
 
     public static void main(String... args) throws IOException {
-        ArrayList<String> keys = getKeywords("JavaScript jQuery BootStrap CDNto");
+        ArrayList<String> keys = getKeywords("JavaScript jQuery BootStrap CDNto afsd farts");
         System.out.println(Arrays.toString(keys.toArray()));
 
     }
@@ -27,7 +27,12 @@ public class Parser {
         String[] words = readme.split(" ");
         ArrayList<String> wordList= new ArrayList<>();
 
-        for (int i = 0; i < words.length; i++) {
+        int len = words.length;
+        if (len > 100) {
+            len = 100;
+        }
+
+        for (int i = 0; i < len; i++) {
             wordList.add(words[i]);
         }
         ArrayList<String> keyWords = new ArrayList<>();
