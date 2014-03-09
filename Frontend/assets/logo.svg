@@ -28,15 +28,15 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.7"
-     inkscape:cx="239.15082"
-     inkscape:cy="265.98876"
+     inkscape:cx="204.80858"
+     inkscape:cy="263.13162"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1440"
-     inkscape:window-height="875"
-     inkscape:window-x="0"
-     inkscape:window-y="768"
+     inkscape:window-width="1366"
+     inkscape:window-height="716"
+     inkscape:window-x="1440"
+     inkscape:window-y="159"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata7">
@@ -46,7 +46,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -57,7 +57,7 @@
      transform="translate(0,-876.9722)">
     <text
        xml:space="preserve"
-       style="font-size:136.27972412px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       style="font-size:136.27972411999999736px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#782167;fill-opacity:1;stroke:none;font-family:Sans"
        x="-0.0020363617"
        y="1052.3632"
        id="text2985"
@@ -66,7 +66,7 @@
          id="tspan2987"
          x="-0.0020363617"
          y="1052.3632"
-         style="font-size:245.30349731px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#6f6f91;font-family:Neou;-inkscape-font-specification:Neou Bold">KARE</tspan></text>
+         style="font-size:245.30349731000001157px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#782167;font-family:Neou;-inkscape-font-specification:Neou Bold">KARE</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Neou;-inkscape-font-specification:Neou Bold"
