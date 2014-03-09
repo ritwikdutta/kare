@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 import static com.hackathon.Tags.*;
 
@@ -31,36 +32,22 @@ public class Recommendation extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String repo = req.getParameter("repo");
-        DBCursor c = coll.find(new BasicDBObject("name", repo));
-        ArrayList<BasicDBObject> recs = new ArrayList<>();
+        List<String> recs = null;
         try {
-            while (c.hasNext()) {
-                BasicDBObject next = (BasicDBObject) c.next();
-                recs.add(next);
-            }
-        } finally {
-            c.close();
+            Recommender.getRecommendations(req.getParameter("repo"), "access_token=71ad4d33a5df2eee6f81caa088eeeb047c7785aa");
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
         }
-        Arrays.sort(recs.toArray(), new Comparator<Object>() {
-            @Override
-            public int compare(Object o1, Object o2) {
-                BasicDBObject db1 = (BasicDBObject)o1;
-                BasicDBObject db2 = (BasicDBObject)o2;
-                return (int)((double)db1.get("score") - (double)db2.get("score"));
 
-            }
-        });
         StringBuilder sb = new StringBuilder();
-        for (final BasicDBObject o : recs) {
-            System.out.println(o.get("name"));
+        for (final String s : recs ) {
             sb.append(new ListViewTemplate().set(new HashMap<String, String>() {{
-                put("href", "http://github.com/" + o.get("other"));
-                put("text", (String)o.get("other"));
+                put("href", "http://github.com/" + s);
+                put("text", s);
+
             }}));
         }
         PrintWriter pw = resp.getWriter();
-
         pw.write(div(sb.toString()));
         pw.flush();
         pw.close();
