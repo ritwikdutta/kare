@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
  */
 
 public class API {
-    private final String multiplexerUrl = "http://ec2-54-186-6-142.us-west-2.compute.amazonaws.com";
+    private final String multiplexerUrl = "http://ec2-54-186-6-142.us-west-2.compute.amazonaws.com:8081";
     private final ScheduledExecutorService exec = Executors.newScheduledThreadPool(100);
 
     private final ConcurrentHashMap<Long, Callback> callbacks = new ConcurrentHashMap<>();
