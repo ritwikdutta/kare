@@ -49,7 +49,6 @@ public class SlaveServlet extends HttpServlet {
 
 
                     conn.setRequestProperty("Connection", "keep-alive");
-                    conn.setConnectTimeout(30 * 1000);
 
                     conn.connect();
 
