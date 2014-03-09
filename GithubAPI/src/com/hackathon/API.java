@@ -39,6 +39,22 @@ public class API {
             });
     }
 
+    public void get(final String url, final Callback callback, final String data) {
+        exec.submit(new Runnable() {
+            @Override
+            public void run() {
+                String str = Http.get(url);
+
+                if (str == null) {
+                    exec.schedule(this, 1, TimeUnit.SECONDS);
+                } else {
+                    callback.onComplete(str, data);
+                }
+
+            }
+        });
+    }
+
 
 
     static class Http {
@@ -62,7 +78,7 @@ public class API {
 
                 return sb.toString();
             } catch (IOException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
 
                 return null;
             }

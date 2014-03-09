@@ -7,4 +7,5 @@ package com.hackathon;
 
 public interface Callback {
     public void onComplete(String data);
+    public void onComplete(String data, String opt);
 }

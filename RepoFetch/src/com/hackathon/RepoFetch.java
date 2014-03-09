@@ -81,7 +81,8 @@ public class RepoFetch {
         fetchAllPages("search/repositories?q=stars:" + "61..62");
         fetchAllPages("search/repositories?q=stars:" + "59..60");
         fetchAllPages("search/repositories?q=stars:" + "57..58");
-        for (int i = 56; i<40; i--) {
+
+        for (int i = 56; i>=40; i--) {
             fetchAllPages("search/repositories?q=stars:" + i);
         }
 

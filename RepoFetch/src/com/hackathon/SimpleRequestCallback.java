@@ -54,13 +54,18 @@ public class SimpleRequestCallback implements Callback {
                                     .append("fork_count", repo.path("forks_count").intValue())
                                     .append("lang", repo.path("language").textValue())
                                     .append("master_branch", repo.path("master_branch").textValue());
-            //System.out.println(doc);
+            System.out.println(doc);
             repos.insert(doc);
+            //repos.save(doc);
 
 
         }
         return;
 
+
+    }
+    @Override
+    public void onComplete(String a, String b) {
 
     }
 }
