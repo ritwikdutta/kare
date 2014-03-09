@@ -11,7 +11,9 @@ public class Main {
         Server server = new Server(Integer.parseInt(args[0]));
 
         ServletContextHandler handler = new ServletContextHandler();
-        handler.addServlet(SlaveServlet.class, "work");
+        handler.addServlet(SlaveServlet.class, "/work");
+
+        handler.setAttribute("access_token", "access_token=27e796664c69cfe02c36ba2342121a90b897e5f4");
 
         server.setHandler(handler);
 

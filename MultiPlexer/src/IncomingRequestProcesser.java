@@ -13,6 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * @author arshsab
@@ -23,7 +24,11 @@ public class IncomingRequestProcesser extends HttpServlet {
     private final ExecutorService exec = Executors.newFixedThreadPool(30);
 
     private ArrayList<String> slaves;
-    private ArrayList<Integer> requests;
+    private ArrayList<AtomicInteger> requests;
+    private ArrayList<AtomicInteger> searches;
+    private ArrayList<AtomicLong> times;
+    private ArrayList<AtomicLong> timesS;
+    private String me;
 
     private ConcurrentHashMap<Integer, String> map;
 
@@ -31,11 +36,21 @@ public class IncomingRequestProcesser extends HttpServlet {
     @SuppressWarnings("ALL")
     public void init() {
         map = (ConcurrentHashMap<Integer, String>) getServletContext().getAttribute("map");
+        me = (String) getServletContext().getAttribute("me");
         slaves = (ArrayList<String>) getServletContext().getAttribute("slaves");
-        requests = new ArrayList<Integer>();
+        requests = new ArrayList<AtomicInteger>();
+        searches = new ArrayList<AtomicInteger>();
+        times = new ArrayList<AtomicLong>();
+        timesS = new ArrayList<AtomicLong>();
 
         for (int i = 0; i < slaves.size(); i++) {
-            requests.add(0);
+            requests.add(new AtomicInteger(5000));
+            times.add(new AtomicLong(System.currentTimeMillis() + 3600 * 1000));
+        }
+
+        for (int i = 0; i < slaves.size(); i++) {
+            searches.add(new AtomicInteger(60));
+            timesS.add(new AtomicLong(System.currentTimeMillis() + 60 * 1000));
         }
 
         for (int i = 0; i < slaves.size(); i++) {
@@ -51,21 +66,38 @@ public class IncomingRequestProcesser extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         final String what = req.getParameter("what");
+        boolean search = what.startsWith("search") || what.startsWith("/search");
 
         final int claim = ids.getAndIncrement();
 
         int i = 0;
         for (final String slave : slaves) {
-            if (requests.get(i++) <= 0) {
-                continue;
+
+            if (!search) {
+                if (requests.get(i++).getAndDecrement() <= 0) {
+                    if (times.get(i - 1).get() < System.currentTimeMillis()) {
+                        times.get(i - 1).set(System.currentTimeMillis() + 3600 * 1000);
+                    } else {
+                        continue;
+                    }
+                }
+            } else {
+                if (searches.get(i++).getAndDecrement() <= 0) {
+                    if (timesS.get(i - 1).get() < System.currentTimeMillis()) {
+                        timesS.get(i - 1).set(System.currentTimeMillis() + 60 * 1000);
+                    } else {
+                        continue;
+                    }
+                }
             }
 
             exec.submit(new Runnable() {
                 @Override
                 public void run() {
                     try {
-                        HttpURLConnection conn = (HttpURLConnection) new URL(slave + URLEncoder.encode("id", claim + "")
-                                + URLEncoder.encode("what", what)).openConnection();
+                        HttpURLConnection conn = (HttpURLConnection) new URL(slave + "work?id=" + claim
+                                + "&what=" + URLEncoder.encode(what, "UTF-8")
+                                + "&callback=" + URLEncoder.encode(me, "UTF-8")).openConnection();
 
                         BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
