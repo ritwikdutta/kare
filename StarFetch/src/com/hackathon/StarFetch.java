@@ -37,7 +37,7 @@ public class StarFetch {
         stars = db.getCollection("stars");
         repos = db.getCollection("repos");
 
-        DBCursor cursor = repos.find();
+        DBCursor cursor = repos.find(new BasicDBObject("star_count", new BasicDBObject("$gt", 1000)));
         try {
             while (cursor.hasNext()) {
                 DBObject repo = cursor.next();
@@ -46,7 +46,7 @@ public class StarFetch {
                 //System.out.print(repo.get("name")+":");
                 //System.out.println(starcount);
                 int pages = starcount / 100;
-                for (int i = 1; i<=pages; i++ ) {
+                for (int i = 1; i<=pages+1; i++ ) {
                     api.get(url + "&page=" + i, cb, repo.get("owner") + "/" + repo.get("name"));
                 }
             }
