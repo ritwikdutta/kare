@@ -1,3 +1,5 @@
+package com.hackathon;
+
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 
@@ -11,7 +13,11 @@ public class Main {
         Server server = new Server(Integer.parseInt(args[0]));
 
         ServletContextHandler handler = new ServletContextHandler();
-        handler.addServlet(SlaveServlet.class, "work");
+        handler.addServlet(SlaveServlet.class, "/work");
+
+        handler.setAttribute("access_token", args[1]);
+
+        System.out.println("Started with key: " + args[1]);
 
         server.setHandler(handler);
 

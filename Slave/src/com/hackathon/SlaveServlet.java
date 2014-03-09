@@ -1,3 +1,5 @@
+package com.hackathon;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.servlet.http.HttpServlet;
@@ -26,7 +28,7 @@ public class SlaveServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) {
         final String callbackServer = req.getParameter("callback");
-        final String url = req.getParameter("url");
+        final String url = req.getParameter("what");
         final String accessToken = this.accessToken;
         final String id = req.getParameter("id");
 
@@ -47,7 +49,6 @@ public class SlaveServlet extends HttpServlet {
 
 
                     conn.setRequestProperty("Connection", "keep-alive");
-                    conn.setConnectTimeout(30 * 1000);
 
                     conn.connect();
 
@@ -94,6 +95,8 @@ public class SlaveServlet extends HttpServlet {
                 wr.write(what);
                 wr.flush();
                 wr.close();
+
+                conn.getInputStream();
             }
         });
     }

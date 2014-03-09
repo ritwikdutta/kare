@@ -1,3 +1,5 @@
+package com.hackathon;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,19 +23,16 @@ public class FinishedServlet extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        int id = Integer.parseInt(req.getParameter("id"));
-
-        BufferedReader br = req.getReader();
-
-        StringBuilder sb = new StringBuilder();
-        String line;
-
-        while ((line = br.readLine()) != null) {
-            sb.append(line);
+        int id = -1;
+        String it = null;
+        for (String str : req.getParameterMap().keySet()) {
+            if (str.equals("id")) {
+                id = Integer.parseInt(req.getParameter("id"));
+            } else {
+                it = str;
+            }
         }
 
-        String str = sb.toString();
-
-
+        map.put(id, it);
     }
 }
