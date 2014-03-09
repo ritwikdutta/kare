@@ -22,17 +22,7 @@ public class Users extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String q = req.getParameter("q").replace(" ", "+");
         //https://github.com/command_bar/users?q=ar
-        URL url = new URL("https://github.com/command_bar/users?q=" + q);
-        BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
-        StringBuilder sb = new StringBuilder();
-        while (true) {
-            String str = br.readLine();
-            if (str == null) {
-                break;
-            }
-            sb.append(str);
-        }
         resp.setContentType("application/json");
-        resp.getWriter().write(sb.toString());
+        resp.getWriter().write(Http.read("https://github.com/command_bar/users?q=" + q));
     }
 }
