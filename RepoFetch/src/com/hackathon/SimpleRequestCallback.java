@@ -3,10 +3,7 @@ package com.hackathon;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hackathon.Callback;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.MongoClient;
+import com.mongodb.*;
 
 import java.util.HashMap;
 
@@ -24,42 +21,46 @@ public class SimpleRequestCallback implements Callback {
             e.printStackTrace();
             return;
         }
-        db = mongoClient.getDB("mydb");
+        db = mongoClient.getDB("kare");
         repos = db.getCollection("repos");
-        repos.createIndex(new BasicDBObject("name", "1"));
-        repos.createIndex(new BasicDBObject("star_count", "1"));
+
 
     }
 
     @Override
     public void onComplete(String data) {
+
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode = null;
         try {
-            rootNode = mapper.readValue(data, JsonNode.class);
+            rootNode = mapper.readTree(data);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        JsonNode items = rootNode.get("items");
+
+        JsonNode items = rootNode.path("items");
         for (int i = 0; i<100; i++) {
             final JsonNode repo = items.get(i);
             if (null == repo) {
-                continue;
+                return;
             }
-            HashMap<String, String> map = new HashMap() {
-                {
-                    put("name", repo.get("name"));
-                    put("owner", repo.get("owner").get("login"));
-                    put("star_count", repo.get("stargazers_count"));
-                    put("desc", repo.get("description"));
-                    put("watcher_count", repo.get("watchers_count"));
-                    put("fork_count", repo.get("forks_count"));
-                    put("lang", repo.get("language"));
-                    put("master_branch", repo.get("master_branch"));
-                }
-            };
-            db.getCollection("repos").insert(new BasicDBObject(map));
+
+            // todo : change get to path
+
+            BasicDBObject doc = new BasicDBObject("name", repo.path("name").textValue())
+                                    .append("owner", repo.get("owner").path("login").textValue())
+                                    .append("star_count", repo.path("stargazers_count").intValue())
+                                    .append("desc", repo.path("description").textValue())
+                                    .append("watcher_count", repo.path("watchers_count").intValue())
+                                    .append("fork_count", repo.path("forks_count").intValue())
+                                    .append("lang", repo.path("language").textValue())
+                                    .append("master_branch", repo.path("master_branch").textValue());
+            //System.out.println(doc);
+            repos.insert(doc);
+
+
         }
+        return;
 
 
     }
