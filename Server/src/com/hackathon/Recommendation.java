@@ -26,8 +26,7 @@ public class Recommendation extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        coll = (DBCollection)getServletContext().getAttribute("correlations");
-        System.out.println(coll.findOne());
+
     }
 
     @Override
