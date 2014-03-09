@@ -15,7 +15,7 @@ public class Main {
         ServletContextHandler handler = new ServletContextHandler();
         handler.addServlet(SlaveServlet.class, "/work");
 
-        handler.setAttribute("access_token", "access_token=27e796664c69cfe02c36ba2342121a90b897e5f4");
+        handler.setAttribute("access_token", args[1]);
 
         server.setHandler(handler);
 
