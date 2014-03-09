@@ -26,10 +26,11 @@ public class Fetch {
     public static void main(String[] args) throws UnknownHostException {
 
 
-        ExecutorService exec = Executors.newFixedThreadPool(150);
+        ExecutorService exec = Executors.newFixedThreadPool(20);
         MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
         DB db = mongoClient.getDB( "kare" );
-        final DBCollection tags = db.createCollection("tags", null);
+        db.createCollection("tags", null);
+        final DBCollection tags = db.getCollection("tags");
         final DBCollection coll = db.getCollection("repos");
         final DBCursor cursor = coll.find();
         try {
