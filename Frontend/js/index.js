@@ -1,4 +1,4 @@
-$(document).ready(function() {
+
 function search(repo) {
     $.get("/recs?repo=" + repo , function(data) {
         console.log(repo);
@@ -121,5 +121,4 @@ $('.textbox').typeahead(null, {
     source: repos.ttAdapter()
 });
 */
-});
 

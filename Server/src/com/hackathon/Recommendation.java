@@ -26,6 +26,7 @@ public class Recommendation extends HttpServlet {
     @Override
     public void init() throws ServletException {
         coll = (DBCollection)getServletContext().getAttribute("correlations");
+        System.out.println(coll.findOne());
     }
 
     @Override
@@ -52,9 +53,10 @@ public class Recommendation extends HttpServlet {
         });
         StringBuilder sb = new StringBuilder();
         for (final BasicDBObject o : recs) {
+            System.out.println(o.get("name"));
             sb.append(new ListViewTemplate().set(new HashMap<String, String>() {{
-                put("$href", "http://github.com/" + o.get("name"));
-                put("$text", (String)o.get("name"));
+                put("href", "http://github.com/" + o.get("other"));
+                put("text", (String)o.get("other"));
             }}));
         }
         PrintWriter pw = resp.getWriter();
