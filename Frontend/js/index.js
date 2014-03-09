@@ -23,7 +23,11 @@ $(".textbox").on("input", function (e) {
             local: results
         });
         suggestions.initialize();
-        $(".textbox .typeahead").typeahead(null, )
-        console.log(results[0].prefix);
+        $(".textbox .typeahead").typeahead(null, {
+            displayKey: "url",
+            name: "users",
+            source: suggestions.ttAdapter()
+
+        });
     })
 });
