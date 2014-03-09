@@ -36,6 +36,7 @@ public class Main {
                 new ServletContextHandler(ServletContextHandler.SESSIONS);
         servletHandler.setContextPath("/");
         servletHandler.addServlet(Users.class, "/users");
+        servletHandler.addServlet(Repos.class, "/repos");
 
         // prevent urls like website.com/js to be listed explicitly
         servletHandler.setInitParameter(
