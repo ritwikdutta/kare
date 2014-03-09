@@ -18,9 +18,15 @@ public class RepoFetch {
     static DBCollection repos;
 
     public static void main(String[] args) throws Exception {
+        String host;
+        if (args.length > 0) {
+            host = args[0];
+        } else {
+            host = "localhost";
+        }
 
         try {
-            mongoClient = new MongoClient("localhost", 27017);
+            mongoClient = new MongoClient(host, 27017);
         } catch (Exception e) {
             e.printStackTrace();
             return;
