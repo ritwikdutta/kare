@@ -1,5 +1,7 @@
 package com.hackathon;
 
+import com.mongodb.DB;
+import com.mongodb.MongoClient;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.Handler;
@@ -7,6 +9,7 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 
 import java.io.*;
+import java.net.UnknownHostException;
 
 /**
  * Set up Jetty and start the server
@@ -31,7 +34,7 @@ public class Main {
         }
     }
 
-    private static Server configureServer(Mode m) {
+    private static Server configureServer(Mode m) throws UnknownHostException {
         ServletContextHandler servletHandler =
                 new ServletContextHandler(ServletContextHandler.SESSIONS);
         servletHandler.setContextPath("/");
@@ -45,6 +48,11 @@ public class Main {
         ResourceHandler staticHandler = new ResourceHandler();
         staticHandler.setWelcomeFiles(new String[] { "index.html" });
         staticHandler.setResourceBase("Frontend");
+
+        MongoClient client =  new MongoClient("localhost", 27017);
+        DB db = client.getDB("kare");
+
+        servletHandler.setAttribute("correlations", db.getCollection("correlations"));
 
         HandlerList handlers = new HandlerList();
         handlers.setHandlers(new Handler[] { staticHandler, servletHandler });
