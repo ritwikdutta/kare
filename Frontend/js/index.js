@@ -12,24 +12,48 @@ $(".textbox").keypress(function (e) {
         search();
     }
 });
-
+/*
 $(".textbox").on("input", function (e) {
     var value = $(this).val();
    $.getJSON("/users?q=" + value, function (data) {
         var results = data.results;
-        var suggestions = new Bloodhound({
-            datumTokenizer: function (d) {return Bloodhound.tokenizers.whitespace(d.url)},
-            queryTokenizer: Bloodhound.tokenizers.whitespace,
-            limit: 5,
-            local: results
-        });
+        console.log(results);
+        
         suggestions.initialize();
         $(".typeahead").typeahead(null, {
-            displayKey: "url",
-            name: "users",
+            
             source: suggestions.ttAdapter()
 
         });
     })
 
 });
+*/
+
+var suggestions = new Bloodhound({
+    datumTokenizer: function (d) {return Bloodhound.tokenizers.whitespace(d.value)},
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    limit: 5,
+    remote: {
+        url:'users?q=%QUERY',
+        filter: function(data) {
+            return $.map(data.results, function(unit) {
+                return {
+                    value: unit.url.substring(1)
+                }
+            });
+        }
+    }
+    
+});
+
+suggestions.initialize().done(function(){
+    console.log('ok');
+});
+
+
+$('.textbox').typeahead(null, {
+    displayKey: 'value',
+    source: suggestions.ttAdapter()
+})
+
