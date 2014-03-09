@@ -1,7 +1,10 @@
 package com.hackathon;
 
+import com.sun.org.apache.regexp.internal.recompile;
+
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by ritwik on 3/8/14.
@@ -12,9 +15,7 @@ public class Parser {
 
     public static void main(String... args) throws IOException {
         ArrayList<String> keys = getKeywords("JavaScript jQuery BootStrap CDNto");
-        for (int i = 0; i < keys.size(); i++) {
-            System.out.println(keys.get(i));
-        }
+        System.out.println(Arrays.toString(keys.toArray()));
 
     }
 
@@ -22,31 +23,32 @@ public class Parser {
         if (tags == null) {
             init();
         }
-        readme = readme.replaceAll("[\\W]|_", " ");
+        readme = readme.replaceAll("[\\W]|_", " ").toLowerCase();
         String[] words = readme.split(" ");
         ArrayList<String> wordList= new ArrayList<>();
 
-        for (int i = 0; i < 101; i++) {
+        for (int i = 0; i < words.length; i++) {
             wordList.add(words[i]);
         }
         ArrayList<String> keyWords = new ArrayList<>();
         for (String word: wordList) {
-            if (tags.indexOf(word) != -1 && keyWords.indexOf(word) == -1) {
+            if (tags.contains(word) && !keyWords.contains(word)) {
                 keyWords.add(word);
             }
         }
+        System.out.println(Arrays.toString(wordList.toArray()));
         return keyWords;
     }
 
     private static void init() throws IOException {
-        System.out.println(new File("MultiPlexer/Data/tags.csv").getAbsolutePath());
+        System.out.println(new File("FetchReadme/Data/tags.csv").getAbsolutePath());
 
-        BufferedReader fileReader = new BufferedReader(new FileReader("MultiPlexer/Data/tags.csv"));
-
+        BufferedReader fileReader = new BufferedReader(new FileReader("FetchReadme/Data/tags.csv"));
+        tags = new ArrayList<>();
         while (true) {
             String str = fileReader.readLine();
             if (str == null) { break; }
-            tags.add(str.replaceAll("[\\W]|_", " "));
+            tags.add(str.replaceAll("[\\W]|_", " ").toLowerCase());
         }
 
     }
