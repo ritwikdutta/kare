@@ -19,6 +19,6 @@ public class Repos extends HttpServlet {
         System.out.println(q);
         //https://github.com/command_bar/users?q=ar
         resp.setContentType("application/json");
-        resp.getWriter().write(HttpUtil.read("https://github.com/command_bar/repos_for/" + q));
+        resp.getWriter().write(Http.read("https://github.com/command_bar/repos_for/" + q));
     }
 }

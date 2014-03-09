@@ -17,6 +17,6 @@ public class Users extends HttpServlet {
         String q = req.getParameter("q").replace(" ", "+");
         //https://github.com/command_bar/users?q=ar
         resp.setContentType("application/json");
-        resp.getWriter().write(HttpUtil.read("https://github.com/command_bar/users?q=" + q));
+        resp.getWriter().write(Http.read("https://github.com/command_bar/users?q=" + q));
     }
 }
