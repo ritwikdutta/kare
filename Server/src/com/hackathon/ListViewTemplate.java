@@ -14,9 +14,7 @@ public class ListViewTemplate extends Template {
     @Override
     public String define() {
         return divStyle("class=\"item\"",
-                h2("$text"),
-                
-                a("$href", "$text")
+                a("$href", h2("$text"))
         );
     }
 
