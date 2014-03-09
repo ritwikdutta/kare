@@ -17,6 +17,8 @@ public class Main {
 
         handler.setAttribute("access_token", args[1]);
 
+        System.out.println("Started with key: " + args[1]);
+
         server.setHandler(handler);
 
         server.start();
