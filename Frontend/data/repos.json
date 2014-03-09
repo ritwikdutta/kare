@@ -1,0 +1,19 @@
+{
+	recs: [
+		{
+			name: "jquery/jquery",
+			recs: [
+				{
+					name: "mbstock/d3.js",
+					recs: []
+				}
+			]
+		},
+		{
+			name: "joyent/node",
+			recs: [
+				{}
+			]
+		}
+	]
+}
