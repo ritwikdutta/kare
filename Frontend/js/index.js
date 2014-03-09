@@ -1,14 +1,13 @@
-function search (){
-          
-};
+function search() {
+    'use strict';       
+}
 
-$("#searchbtn").click(function () {
-	search();
+$("#searchbtn").click(function (e) {
+    search();
 });
 
 $('.textbox').keypress(function (e) {
-  if (e.which == 13) {
-    search();
-  }
+    if (e.which === 13) {
+        search();
+    }
 });
-
