@@ -14,7 +14,7 @@ $(".textbox").keypress(function (e) {
 
 $(".textbox").on("input", function (e) {
     var value = $(this).val();
-    $.getJSON("/users?q=" + value, function (data) {
+   $.getJSON("/users?q=" + value, function (data) {
         var results = data.results;
         var suggestions = new Bloodhound({
             datumTokenizer: function (d) {return Bloodhound.tokenizers.whitespace(d.url)},
@@ -23,7 +23,7 @@ $(".textbox").on("input", function (e) {
             local: results
         });
         suggestions.initialize();
-        $(".textbox .typeahead").typeahead(null, {
+        $(".typeahead").typeahead(null, {
             displayKey: "url",
             name: "users",
             source: suggestions.ttAdapter()

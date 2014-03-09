@@ -20,7 +20,7 @@ import java.net.URL;
 public class Users extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String q = req.getParameter("q");
+        String q = req.getParameter("q").replace(" ", "+");
         //https://github.com/command_bar/users?q=ar
         URL url = new URL("https://github.com/command_bar/users?q=" + q);
         BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
