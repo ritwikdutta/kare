@@ -10,7 +10,7 @@ import java.util.HashMap;
  * Created by afoote97 on 3/8/14.
  */
 public class RepoFetch {
-    static API api = new API();
+    static API api;
     static SimpleRequestCallback scb = new SimpleRequestCallback();
     static DecreasingRequestCallback dcb = new DecreasingRequestCallback();
     static MongoClient mongoClient;
@@ -24,6 +24,7 @@ public class RepoFetch {
         } else {
             host = "localhost";
         }
+        api = new API(args[1]);
 
         try {
             mongoClient = new MongoClient(host, 27017);
