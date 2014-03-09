@@ -16,6 +16,14 @@ $(".textbox").on("input", function (e) {
     var value = $(this).val();
     $.getJSON("/users?q=" + value, function (data) {
         var results = data.results;
+        var suggestions = new Bloodhound({
+            datumTokenizer: function (d) {return Bloodhound.tokenizers.whitespace(d.url)},
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            limit: 5,
+            local: results
+        });
+        suggestions.initialize();
+        $(".textbox .typeahead").typeahead(null, )
         console.log(results[0].prefix);
     })
 });
