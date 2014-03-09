@@ -40,6 +40,7 @@ public class Main {
         servletHandler.setContextPath("/");
         servletHandler.addServlet(Users.class, "/users");
         servletHandler.addServlet(Repos.class, "/repos");
+        servletHandler.addServlet(Recommendation.class, "/recs");
 
         // prevent urls like website.com/js to be listed explicitly
         servletHandler.setInitParameter(
@@ -49,7 +50,7 @@ public class Main {
         staticHandler.setWelcomeFiles(new String[] { "index.html" });
         staticHandler.setResourceBase("Frontend");
 
-        MongoClient client =  new MongoClient("localhost", 27017);
+        MongoClient client =  new MongoClient("54.186.89.119", 27017);
         DB db = client.getDB("kare");
 
         servletHandler.setAttribute("correlations", db.getCollection("correlations"));
