@@ -10,6 +10,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -28,6 +29,7 @@ public class Fetch {
         ExecutorService exec = Executors.newFixedThreadPool(150);
         MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
         DB db = mongoClient.getDB( "kare" );
+        final DBCollection tags = db.createCollection("tags", null);
         final DBCollection coll = db.getCollection("repos");
         final DBCursor cursor = coll.find();
         try {
@@ -56,12 +58,14 @@ public class Fetch {
                         }
                         if (readme != null) {
                             try {
-                                obj.append("tags", Parser.getKeywords(readme + (String)obj.get("desc")));
+                                ArrayList<String> tagList = Parser.getKeywords(readme + (String)obj.get("desc"));
+                                System.out.println("added tags:" + Arrays.toString(tagList.toArray())  + " to " + name + "/" + repo);
+                                obj.append("tags", tagList);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
                         }
-                        coll.save(obj);
+                        tags.insert(obj);
                     }
                 });
 
