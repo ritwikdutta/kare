@@ -38,6 +38,8 @@ public class Main {
         handler.addServlet(IncomingRequestProcesser.class, "/incoming");
         handler.addServlet(RetrieveServlet.class, "/retrieve");
 
+        handler.setMaxFormContentSize(2000000000);
+
         handler.setAttribute("me", props.getProperty("me"));
         handler.setAttribute("slaves", slaveServers);
         handler.setAttribute("map", new ConcurrentHashMap<Integer, String>());
