@@ -3,8 +3,11 @@ package com.hackathon;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.*;
-import java.net.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -14,17 +17,16 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @since 03 2014
  */
 
+
 public class Recommender {
     public static void main(String... args) throws InterruptedException, ExecutionException, IOException {
-        List<String> recommendations = getRecommendations("jquery/jquery", "access_token=71ad4d33a5df2eee6f81caa088eeeb047c7785aa");
-
-        System.out.println(recommendations);
     }
 
     public static synchronized List<String> getRecommendations(final String REPO_NAME, final String token) throws ExecutionException, InterruptedException, IOException {
         ObjectMapper mapper = new ObjectMapper();
 
         ArrayBlockingQueue<Runnable> queue = new ArrayBlockingQueue<>(1 << 13);
+
 
         ThreadPoolExecutor exec = new ThreadPoolExecutor(150, 150, 1000, TimeUnit.SECONDS, queue);
         ConcurrentHashMap<String, AtomicInteger> repos = new ConcurrentHashMap<>();
@@ -49,7 +51,8 @@ public class Recommender {
                 if (exec.getActiveCount() == 0) {
                     break;
                 }
-            } else {
+            } else
+            {
                 Thread.sleep(100);
             }
         }

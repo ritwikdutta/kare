@@ -1,13 +1,10 @@
 package com.hackathon;
 
-import com.mongodb.DB;
-import com.mongodb.MongoClient;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
-
 import java.io.*;
 import java.net.UnknownHostException;
 
@@ -49,11 +46,6 @@ public class Main {
         ResourceHandler staticHandler = new ResourceHandler();
         staticHandler.setWelcomeFiles(new String[] { "index.html" });
         staticHandler.setResourceBase("Frontend");
-
-        MongoClient client =  new MongoClient("54.186.89.119", 27017);
-        DB db = client.getDB("kare");
-
-        servletHandler.setAttribute("correlations", db.getCollection("correlations"));
 
         HandlerList handlers = new HandlerList();
         handlers.setHandlers(new Handler[] { staticHandler, servletHandler });

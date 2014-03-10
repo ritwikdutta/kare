@@ -1,9 +1,5 @@
 package com.hackathon;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,12 +13,14 @@ import static com.hackathon.Tags.*;
 
 /**
  * @author Adrian Chmielewski-Anders
+ * @author Ritwik Dutta
  * @since 0.0.1
  */
 
 public class Recommendation extends HttpServlet {
 
-    private DBCollection coll;
+    private String[] accessTokens = new String[] {"6f83e3598e620bf5f55d676124e7f0b92de84ab8", "12f2e41bf7e1f3e695ca2e801a18d4f5561a8905", "456c2e2224a028da58d60f1f6272b478097bc4c2","f0d129eb9e7dc390781d6346bc5da5b1f3a7496c"};
+    private int currentToken = 0;
 
     @Override
     public void init() throws ServletException {
@@ -33,7 +31,13 @@ public class Recommendation extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<String> recs = null;
         try {
-            recs = Recommender.getRecommendations(req.getParameter("repo"), "access_token=71ad4d33a5df2eee6f81caa088eeeb047c7785aa");
+            if (currentToken == accessTokens.length) {
+                currentToken = 0;
+            }
+            System.out.println("Current access token: " + accessTokens[currentToken]);
+            recs = Recommender.getRecommendations(req.getParameter("repo"), "access_token=" + accessTokens[currentToken]);
+            currentToken++;
+
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
