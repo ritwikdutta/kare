@@ -2,6 +2,7 @@
 function search(repo) {
     $.get("/recs?repo=" + repo , function(data) {
         console.log(repo);
+        $("#append").html("");
         $("#append").append(data);
         NProgress.done();
     });
@@ -73,9 +74,11 @@ var repos = new Bloodhound({
     }
 
 });
+
 repos.initialize().done(function(){
     console.log("repo ok");
 });
+
 var suggestions = function (query, cb) {
     var ret;
     //if query contains / it is a repo search
@@ -114,14 +117,5 @@ $(".textbox").keypress(function (e) {
         $(this).change();
 
     }
-
-
-
 });
 
-/*
- $('.textbox').typeahead(null, {
- displayKey: 'value',
- source: repos.ttAdapter()
- });
- */
